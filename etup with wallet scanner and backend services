@@ -1,0 +1,83 @@
+[1mdiff --git a/.env b/.env[m
+[1mnew file mode 100644[m
+[1mindex 0000000..f98eec5[m
+[1m--- /dev/null[m
+[1m+++ b/.env[m
+[36m@@ -0,0 +1,17 @@[m
+[32m+[m[32m# RPC URLs[m
+[32m+[m[32mETH_RPC_URL=your_ethereum_rpc_url[m
+[32m+[m[32mBSC_RPC_URL=your_bsc_rpc_url[m
+[32m+[m[32mPOLYGON_RPC_URL=your_polygon_rpc_url[m
+[32m+[m[32mARB_RPC_URL=your_arbitrum_rpc_url[m
+[32m+[m
+[32m+[m[32m# API Keys[m
+[32m+[m[32mETHERSCAN_API_KEY=your_etherscan_key[m
+[32m+[m[32mBSCSCAN_API_KEY=your_bscscan_key[m
+[32m+[m[32mPOLYGONSCAN_API_KEY=your_polygonscan_key[m
+[32m+[m[32mARBISCAN_API_KEY=your_arbiscan_key[m
+[32m+[m
+[32m+[m[32m# Price API[m
+[32m+[m[32mCOINGECKO_API_KEY=your_coingecko_key[m
+[32m+[m
+[32m+[m[32m# Database[m
+[32m+[m[32mMONGODB_URI=your_mongodb_uri[m
+\ No newline at end of file[m
+[1mdiff --git a/backend/app.js b/backend/app.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e69de29[m
+[1mdiff --git a/backend/config/abis/erc20.json b/backend/config/abis/erc20.json[m
+[1mnew file mode 100644[m
+[1mindex 0000000..1cc21c1[m
+[1m--- /dev/null[m
+[1m+++ b/backend/config/abis/erc20.json[m
+[36m@@ -0,0 +1,15 @@[m
+[32m+[m[32m{[m
+[32m+[m[32m  "abi": [[m
+[32m+[m[32m    "function name() view returns (string)",[m
+[32m+[m[32m    "function symbol() view returns (string)",[m
+[32m+[m[32m    "function decimals() view returns (uint8)",[m
+[32m+[m[32m    "function totalSupply() view returns (uint256)",[m
+[32m+[m[32m    "function balanceOf(address) view returns (uint256)",[m
+[32m+[m[32m    "function transfer(address to, uint256 amount) returns (bool)",[m
+[32m+[m[32m    "function allowance(address owner, address spender) view returns (uint256)",[m
+[32m+[m[32m    "function approve(address spender, uint256 amount) returns (bool)",[m
+[32m+[m[32m    "function transferFrom(address from, address to, uint256 amount) returns (bool)",[m
+[32m+[m[32m    "event Transfer(address indexed from, address indexed to, uint256 value)",[m
+[32m+[m[32m    "event Approval(address indexed owner, address indexed spender, uint256 value)"[m
+[32m+[m[32m  ][m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/backend/config/abis/erc721.json b/backend/config/abis/erc721.json[m
+[1mnew file mode 100644[m
+[1mindex 0000000..dd1f93a[m
+[1m--- /dev/null[m
+[1m+++ b/backend/config/abis/erc721.json[m
+[36m@@ -0,0 +1,18 @@[m
+[32m+[m[32m{[m
+[32m+[m[32m  "abi": [[m
+[32m+[m[32m    "function name() view returns (string)",[m
+[32m+[m[32m    "function symbol() view returns (string)",[m
+[32m+[m[32m    "function tokenURI(uint256 tokenId) view returns (string)",[m
+[32m+[m[32m    "function balanceOf(address owner) view returns (uint256)",[m
+[32m+[m[32m    "function ownerOf(uint256 tokenId) view returns (address)",[m
+[32m+[m[32m    "function safeTransferFrom(address from, address to, uint256 tokenId)",[m
+[32m+[m[32m    "function transferFrom(address from, address to, uint256 tokenId)",[m
+[32m+[m[32m    "function approve(address to, uint256 tokenId)",[m
+[32m+[m[32m    "function getApproved(uint256 tokenId) view returns (address)",[m
+[32m+[m[32m    "function setApprovalForAll(address operator, bool approved)",[m
+[32m+[m[32m    "function isApprovedForAll(address owner, address operator) view returns (bool)",[m
+[32m+[m[32m    "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",[m
+[32m+[m[32m    "event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId)",[m
+[32m+[m[32m    "event ApprovalForAll(address indexed owner, address indexed operator, bool approved)"[m
+[32m+[m[32m  ][m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/backend/config/abis/permit2.json b/backend/config/abis/permit2.json[m
+[1mnew file mode 100644[m
+[1mindex 0000000..9aa784d[m
+[1m--- /dev/null[m
+[1m+++ b/backend/config/abis/permit2.json[m
+[36m@@ -0,0 +1,15 @@[m
+[32m+[m[32m{[m
+[32m+[m[32m  "abi": [[m
+[32m+[m[32m    "functio
