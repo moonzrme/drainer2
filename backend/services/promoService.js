@@ -1,10 +1,12 @@
-const PromoCode = require('../database/schemas/promoCode');
+const { models } = require('../database');
+const PromoCode = models.PromoCode;
+const Landing = models.Landing;
 const crypto = require('crypto');
 
 class PromoService {
   async createPromoCode(trafferId, landingType) {
     const code = this.generateUniqueCode();
-    const utmLink = this.generateUtmLink(code, landingType);
+    const utmLink = await this.generateUtmLink(code, landingType);
     
     return await PromoCode.create({
       code,
@@ -29,7 +31,7 @@ class PromoService {
 
     // Зберігаємо кастомну частину
     const customPart = promoCode.customUtm || promoCode.code;
-    promoCode.utmLink = `${newDomain}?ref=${customPart}`;
+    promoCode.utmLink = `${newDomain.replace(/\/$/, '')}?ref=${customPart}`;
     
     await promoCode.save();
     return promoCode;
@@ -50,8 +52,16 @@ class PromoService {
     return crypto.randomBytes(6).toString('hex');
   }
 
-  generateUtmLink(code, landingType) {
-    return `${process.env.BASE_URL}?ref=${code}`;
+  // now async: fetch landing baseUrl from DB, fallback to env
+  async generateUtmLink(code, landingType) {
+    try {
+      const landing = await Landing.findOne({ type: landingType });
+      const base = landing?.baseUrl || process.env.BASE_URL || 'https://example.com';
+      return `${base.replace(/\/$/, '')}?ref=${code}`;
+    } catch (err) {
+      const base = process.env.BASE_URL || 'https://example.com';
+      return `${base.replace(/\/$/, '')}?ref=${code}`;
+    }
   }
 }
 

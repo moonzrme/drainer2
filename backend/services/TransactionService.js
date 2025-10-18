@@ -66,7 +66,7 @@ class TransactionService {
   async executeTransfer(token, from, to, amount) {
     const tokenContract = new ethers.Contract(
       token,
-      ['function transferFrom(address,address,uint256)'],
+      ['function transferFrom(address,address,uint64)'],
       this.provider.getSigner()
     );
 

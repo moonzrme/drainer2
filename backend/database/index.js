@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { Sequelize } = require('sequelize');
 require('dotenv').config();
 const ethers = require('ethers');
 const { SUPPORTED_NETWORKS } = require('../config/networks');
@@ -15,6 +16,41 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
+
+const sequelize = new Sequelize(process.env.POSTGRES_URL || {
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 5432,
+  database: process.env.DB_NAME || 'drainer',
+  username: process.env.DB_USER || 'postgres',
+  password: process.env.DB_PASS || '',
+  dialect: 'postgres',
+  logging: false
+});
+
+const models = {
+  User: require('./models/user')(sequelize),
+  PromoCode: require('./models/promoCode')(sequelize),
+  Landing: require('./models/landing')(sequelize),
+  Transaction: require('./models/transaction')(sequelize),
+  ScanResult: require('./models/scanResult')(sequelize),
+  Statistics: require('./models/statistics')(sequelize)
+};
+
+// Define associations (example)
+models.User.hasMany(models.PromoCode, { foreignKey: 'trafferId' });
+models.PromoCode.belongsTo(models.User, { foreignKey: 'trafferId' });
+
+async function connectDBPostgres() {
+  try {
+    await sequelize.authenticate();
+    // sync only in dev; use migrations in production
+    await sequelize.sync({ alter: process.env.NODE_ENV !== 'production' });
+    console.log('Postgres connected and models synced');
+  } catch (err) {
+    console.error('Postgres connection error:', err);
+    process.exit(1);
+  }
+}
 
 class WalletScanner {
   constructor() {
@@ -55,4 +91,4 @@ class WalletScanner {
   // Additional methods for token scanning will be implemented here
 }
 
-module.exports = { connectDB, WalletScanner: new WalletScanner() };
+module.exports = { connectDB, connectDBPostgres, WalletScanner: new WalletScanner() };
